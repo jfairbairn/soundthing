@@ -1,0 +1,45 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.2.2)
+    builder (2.1.2)
+    daemons (1.1.0)
+    diff-lcs (1.1.2)
+    em-http-request (0.2.14)
+      addressable (>= 2.0.0)
+      eventmachine (>= 0.12.9)
+    em-net-http (0.2.5)
+      addressable
+      em-http-request (>= 0.2.10)
+      eventmachine (>= 0.12.10)
+    eventmachine (0.12.10)
+    hiredis (0.3.1)
+    json (1.4.6)
+    rack (1.2.1)
+    rspec (2.5.0)
+      rspec-core (~> 2.5.0)
+      rspec-expectations (~> 2.5.0)
+      rspec-mocks (~> 2.5.0)
+    rspec-core (2.5.1)
+    rspec-expectations (2.5.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.5.0)
+    sinatra (1.0)
+      rack (>= 1.0)
+    thin (1.2.7)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  builder
+  em-net-http
+  eventmachine
+  hiredis
+  json
+  rspec
+  sinatra
+  thin

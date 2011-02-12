@@ -1,0 +1,13 @@
+source :rubygems
+
+gem 'thin'
+gem 'eventmachine'
+gem 'hiredis'
+gem 'sinatra'
+gem 'builder'
+gem 'em-net-http'
+gem 'json'
+
+group :dev do
+  gem 'rspec'
+end
