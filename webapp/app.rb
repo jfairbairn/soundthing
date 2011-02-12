@@ -23,8 +23,11 @@ class User
 end
 
 get '/' do
-  content_type 'text/xml'
-  '<hello/>'
+  redirect '/mobile/index.html'
+end
+
+get '/mobile' do
+  redirect '/mobile/index.html'
 end
 
 get '/location/:username/:lat/:lng' do
@@ -39,4 +42,28 @@ post '/location/:username' do
   username = params[:username]
   content_type 'text/json'
   Solr.new.put(username, loc)
+end
+
+USERS = {
+  'tom' => 'pass',
+  'james' => 'isanoob'
+}
+
+post '/mobile/signin' do
+  spotifyname = params[:spotifyname]
+  spotifypass = params[:spotifypass]
+  
+  if USERS[spotifyname] != spotifypass
+    halt 403
+  end
+  
+  response.set_cookie("spotifyname", spotifyname)
+  response.set_cookie("spotifypass", spotifypass)
+  redirect '/mobile/welcome.html'
+end
+
+get '/mobile/signout' do
+  response.set_cookie('spotifyname', :expires => Time.now)
+  response.set_cookie('spotifypass', :expires => Time.now)
+  redirect '/mobile/index.html'
 end

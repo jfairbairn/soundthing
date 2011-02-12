@@ -6,6 +6,7 @@
 	<link rel="stylesheet"  href="css/jquery.mobile-1.0a3.min.css" />
 	<script type="text/javascript" src="js/jquery-1.5.min.js"></script> 
 	<script type="text/javascript" src="js/jquery.mobile-1.0a3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
 	<meta name="viewport" content="width=device-width, user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 </head> 
@@ -15,7 +16,7 @@
 
   	<div data-role="header">
   	  <a href="index.html" data-icon="back" data-theme="b">Back</a>
-  		<h1>Checkin</h1>
+  		<h1>Check in</h1>
   	</div>
 
   	<div data-role="content">	
@@ -83,6 +84,14 @@
         error('not supported');
       }
 
+      </script>
+
+      <script>
+    	  $(document).ready(function() {
+          if ($.cookie("spotifyname") == null) {
+            window.location="index.html";
+          }
+        });
       </script>
   				
   	</div>
