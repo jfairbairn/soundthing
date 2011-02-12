@@ -7,14 +7,14 @@ require 'json'
 require File.dirname(__FILE__) +'/solr'
 
 class Location
-  attr_reader :lat, :lon
+  attr_reader :lat, :lng
   
   def initialize(params)
-    @lat, @lon = params[:lat], params[:lon]
+    @lat, @lng = params[:lat], params[:lng]
   end
   
   def to_s
-    "#{@lat},#{@lon}"
+    "#{@lat},#{@lng}"
   end
 end
 
@@ -27,7 +27,7 @@ get '/' do
   '<hello/>'
 end
 
-get '/location/:username/:lat/:lon' do
+get '/location/:username/:lat/:lng' do
   loc = Location.new(params)
   username = params[:username]
   content_type 'text/plain'

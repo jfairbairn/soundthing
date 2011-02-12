@@ -20,15 +20,16 @@
 
   	<div data-role="content">	
   		
-  		<div class="article"> 
+  		<article> 
         <p>Finding your location: <span id="status">checking...</span></p> 
-      </div>
+        <div id="mapcanvas" style="width:100%; height:200px;"></div>
+      </article>
       
       <div class="result">
+        
       </div>
       
-      <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-  		<script> 
+      <script> 
   		function sendlocation(lat, lng) {
   		  query = "lat="+lat+"&lon="+lng;
         //console.log(query);
@@ -37,17 +38,19 @@
           //url: "/location/tom/"+lat+"/"+lon,
           url: "/location/tom",
           data: query,
-          success: function(msg) {
-            $('.result').html("Yay!");
-            //console.log(msg);
+          success: function(data) {
+            displaymap(lat, lng);
+            console.log(data);
           },
-          error: function(msg) {
-            $('.result').html("Error!");
-            //console.log(msg);
+          error: function(data) {
           }
         });
         
         
+  		}
+  		
+  		function displaymap(lat, lng) {
+        // Show mobile webkit compatable map here if we want
   		}
   		
       function success(position) {
@@ -61,30 +64,8 @@
         s.innerHTML = "found you!";
         s.className = 'success';
         
-        var mapcanvas = document.createElement('div');
-        mapcanvas.id = 'mapcanvas';
-        mapcanvas.style.height = '200px';
-        mapcanvas.style.width = '100%';
-
-        document.querySelector('.article').appendChild(mapcanvas);
-
-        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        var myOptions = {
-          zoom: 15,
-          center: latlng,
-          mapTypeControl: false,
-          navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
-
-        var marker = new google.maps.Marker({
-            position: latlng, 
-            map: map, 
-            title:"You are here!"
-        });
-        
         sendlocation(position.coords.latitude, position.coords.longitude);
+        
       }
 
       function error(msg) {
