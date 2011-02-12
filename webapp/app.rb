@@ -3,7 +3,6 @@ require 'sinatra'
 require 'hiredis'
 require 'builder'
 require 'json'
-require 'em-net-http'
 
 require File.dirname(__FILE__) +'/solr'
 
@@ -28,15 +27,9 @@ get '/' do
   '<hello/>'
 end
 
-post '/location/:username' do
+get '/location/:username/:lat/:lon' do
   loc = Location.new(params)
-  content_type 'text/xml'
-  post_doc = Builder::XmlMarkup.new
-  post_doc.add do |add|
-    add.doc do |doc|
-      doc.field(params[:username], :name=>'name')
-      doc.field(loc.to_s, :name=>'location')
-    end
-  end
-  " TOM IS A NOOB #{loc.to_s}"
+  username = params[:username]
+  content_type 'text/plain'
+  Solr.new.put(username, loc)
 end
