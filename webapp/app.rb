@@ -33,3 +33,10 @@ get '/location/:username/:lat/:lon' do
   content_type 'text/plain'
   Solr.new.put(username, loc)
 end
+
+post '/location/:username' do
+  loc = Location.new(params)
+  username = params[:username]
+  content_type 'text/json'
+  Solr.new.put(username, loc)
+end

@@ -18,7 +18,7 @@ class Solr
       req['Content-Type'] = 'text/xml'
       req.body = t
       res = http.request(req)
-      "#{res.code} #{res.body}"
+      res.body
     end
   end
 end
