@@ -7,7 +7,7 @@ class Solr
   def put(username, loc)
     t=''
     post_doc = Builder::XmlMarkup.new(:target=>t)
-    post_doc.add(:overwrite=>'true') do |add|
+    post_doc.add(:commitWithin=>'500') do |add|
       add.doc do |doc|
         doc.field(username, :name=>'id')
         doc.field(loc.to_s, :name=>'location')

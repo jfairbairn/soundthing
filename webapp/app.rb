@@ -22,11 +22,6 @@ class User
   
 end
 
-get '/' do
-  content_type 'text/xml'
-  '<hello/>'
-end
-
 get '/location/:username/:lat/:lng' do
   loc = Location.new(params)
   username = params[:username]
