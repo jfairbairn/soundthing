@@ -105,15 +105,37 @@
         }
         function showartistinfo(artist) {
           
-          eartist = '<span class="st-music-artist">'+artist+'</span><br/>';
-          etrack = '<span class="st-music-artist">Some track</span><br/>';
-          ealbum = '<span class="st-music-track">Some album</span><br/>';
-          eyear = '<span class="st-music-year">2011</span><br/>';
+          query = "/nowplaying";
           
-          var artistinfo = '<div id="st-artistinfo" class="ui-body ui-body-e"><h3 class="reducedpadding">Now playing</h3><div class="ui-grid-a"><div class="ui-block-b">'+eartist+etrack+ealbum+eyear+'</div></div><br/>';
           
-          $("article").append(artistinfo);
-          getmusicnews(artist);
+          var musicnews = $.getJSON(query, function(data) {
+            //console.log("success");
+            
+            var track = data[0];
+            var artist = data[1];
+            var album = data[2];
+            
+
+            eartist = '<span class="st-music-artist">'+artist+'</span><br/>';
+            etrack = '<span class="st-music-artist">'+track+'</span><br/>';
+            ealbum = '<span class="st-music-track">'+album+'</span><br/>';
+
+            var artistinfo = '<div id="st-artistinfo" class="ui-body ui-body-e"><h3 class="reducedpadding">Now playing</h3><div class="ui-grid-a"><div class="ui-block-b">'+eartist+etrack+ealbum+eyear+'</div></div><br/>';
+
+            $("article").append(artistinfo);
+            getmusicnews(artist);
+            
+          })
+          .success(function() { 
+            //console.log("second success"); 
+          })
+          .error(function() {
+            //console.log("error"); 
+          })
+          .complete(function() {
+            //console.log("complete");
+            getgignews(artist);
+          });
         }
       
     		function sendlocation(lat, lng) {
@@ -127,8 +149,7 @@
         		  $("article").prepend("<span><strong>Lng</strong>: "+lng+"</span><br/><br/>");
         		  $("article").prepend("<span><strong>Lat</strong>: "+lat+"</span><br/>");
               displaymap(lat, lng);
-              artist = "Kanye West";
-              showartistinfo(artist);
+              showartistinfo();
               //console.log(data);
             },
             error: function(data) {
