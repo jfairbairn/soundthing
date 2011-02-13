@@ -7,10 +7,11 @@ class Solr
   def put(username, loc)
     t=''
     post_doc = Builder::XmlMarkup.new(:target=>t)
-    post_doc.add do |add|
+    post_doc.add(:overwrite=>'true') do |add|
       add.doc do |doc|
         doc.field(username, :name=>'id')
         doc.field(loc.to_s, :name=>'location')
+        doc.field(username, :name=>'name')
       end
     end
     Net::HTTP.new(@host, @port).start do |http|
