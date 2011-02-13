@@ -30,6 +30,10 @@ get '/mobile' do
   redirect '/mobile/index.html'
 end
 
+get '/mobile/' do
+  redirect '/mobile/index.html'
+end
+
 get '/location/:username/:lat/:lng' do
   loc = Location.new(params)
   username = params[:username]
@@ -45,8 +49,8 @@ post '/location/:username' do
 end
 
 USERS = {
-  'tom' => 'pass',
-  'james' => 'isanoob'
+  'tonynibbles' => 'pass',
+  'furbage' => 'isanoob'
 }
 
 post '/mobile/signin' do
@@ -59,7 +63,7 @@ post '/mobile/signin' do
   
   response.set_cookie("spotifyname", spotifyname)
   response.set_cookie("spotifypass", spotifypass)
-  redirect '/mobile/welcome.html'
+  redirect '/mobile/checkin.html'
 end
 
 get '/mobile/signout' do
