@@ -48,6 +48,18 @@ post '/location/:username' do
   Solr.new.put(username, loc)
 end
 
+get '/nowplaying' do
+  output = nil
+  IO.popen(File.dirname(__FILE__) + '/../spotify/daemon/spdaemon', 'r+') do |io|
+    io.puts("furbage Timbuktu g")
+    io.close_write
+    output = io.read
+  end
+  content_type 'text/json'
+#  output
+  JSON.parse(output)[0].to_json
+end
+
 USERS = {
   'tonynibbles' => 'pass',
   'furbage' => 'isanoob'

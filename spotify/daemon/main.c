@@ -125,7 +125,6 @@ void toplistbrowse_complete(sp_toplistbrowse *toplist, void *userdata)
 	printf("[");
 	size_t i;
 	char buf[256];
-	printf("[");
 	for (i = 0; i < count; ++i)
 	{
 		if (i != 0) printf(",");
@@ -142,6 +141,7 @@ void toplistbrowse_complete(sp_toplistbrowse *toplist, void *userdata)
 	fflush(stdout);
 	sp_toplistbrowse_release(toplist);
 	pthread_cond_signal(&cmd_cond);
+	exit(0);
 //	pthread_mutex_unlock(&mutex);
 }
 
