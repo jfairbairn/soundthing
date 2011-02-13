@@ -1,0 +1,9 @@
+Get a list of top artists and similar artists for a user -- via popen/lines/json
+Get albums -> get tracks
+Update the list in Solr, with prefs + location
+
+Update the listener's location
+Make a soundthing playlist if it doesn't exist
+Get all nearby users' music, order by popularity, add to soundthing playlist
+
+
