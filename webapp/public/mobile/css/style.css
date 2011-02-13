@@ -1,0 +1,23 @@
+.st-music-image {
+  display: block;
+  text-align: center;
+  padding: 10%;
+}
+.st-music-image img {
+  margin: auto;
+  width: 100%;
+}
+.st-music-artist {
+  font-size: 1.17em;
+}
+.st-music-track {
+  font-size: 1.08em;
+}
+.st-music-year {
+  font-size: 0.83em;
+  font-weight: normal;
+}
+.reducedpadding {
+  padding: 0px;
+  margin: 0px;
+}

@@ -5,25 +5,53 @@
 	<title>SoundThing</title> 
 	<link rel="stylesheet"  href="css/jquery.mobile-1.0a3.min.css" />
 	<script type="text/javascript" src="js/jquery-1.5.min.js"></script> 
+	<script type="text/javascript" src="js/scripts.js"></script>
 	<script type="text/javascript" src="js/jquery.mobile-1.0a3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
 	<meta name="viewport" content="width=device-width, user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link href="/mobile/img/startup.jpg" rel="apple-touch-startup-image" /> 
+  <link href="/mobile/img/icon.png" rel="apple-touch-icon" title="SoundThing" type="image/png" />
 </head> 
 <body> 
 
-  <div data-role="page" data-theme="b" id="st-home">
-
-  	<div data-role="header">
-  		<h1>SoundThing</h1>
-  	</div>
-
-  	<div data-role="content">	
-  		<h1>Welcome to SoundThing</h1>
-  		<p>Yo yo yo! Let's get you checked in.</p>		
-      <a href="checkin.html" data-role="button" data-theme="e">Checkin</a>
-  	</div>
-
-  </div>
  
+  <div data-role="page" data-theme="b" id="st-signin">
+
+
+    <div data-role="content"> 
+    		<form action="/mobile/signin" method="post"> 
+          
+      		<h2><img src="/mobile/img/top-logo.png" width="280" height="52"/></h2>
+
+          <p>Sign-in with Spotify to continue</p>
+      		    		    
+    			<div data-role="fieldcontain"> 
+    	         <label for="name">Spotify username:</label> 
+    	         <input type="text" name="spotifyname" id="spotifyname" value=""  /> 
+    	         <br/>
+    	         <label for="password">Spotify password:</label> 
+    	         <input type="password" name="spotifypass" id="spotifypass" value=""  /> 
+     	         <br/>
+        		  <fieldset class="ui-grid-a"> 
+        				<div class="ui-block-a"><button type="submit" data-theme="d">Cancel</button></div> 
+        				<div class="ui-block-b"><button type="submit" data-theme="e">Submit</button></div> 
+        	    </fieldset> 
+      		</div> 
+      	</form> 
+
+  	</div>
+  	
+  </div>
+
+  <script>
+	  $(document).ready(function() {
+      if ($.cookie("spotifyname") != null) {
+        window.location="checkin.html";
+      }
+    });
+  </script>
+  	
 </body> 
 </html>

@@ -16,7 +16,7 @@ class Solr
     end
     Net::HTTP.new(@host, @port).start do |http|
       req = Net::HTTP::Post.new('/solr/update?wt=json&indent=true')
-      req['Content-Type'] = 'text/xml'
+      req['Content-Type'] = 'text/json'
       req.body = t
       res = http.request(req)
       res.body

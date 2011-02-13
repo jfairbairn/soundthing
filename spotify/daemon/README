@@ -1,0 +1,4 @@
+popen('spdaemon')
+
+send @tom getartists
+

@@ -4,90 +4,184 @@
 	<meta charset="utf-8" /> 
 	<title>SoundThing</title> 
 	<link rel="stylesheet"  href="css/jquery.mobile-1.0a3.min.css" />
+	<link rel="stylesheet" href="css/style.css" />
 	<script type="text/javascript" src="js/jquery-1.5.min.js"></script> 
 	<script type="text/javascript" src="js/jquery.mobile-1.0a3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/jquery.timeago.js"></script>
+	<script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
 	<meta name="viewport" content="width=device-width, user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link href="/mobile/img/startup.jpg" rel="apple-touch-startup-image" /> 
+  <link href="/mobile/img/icon.png" rel="apple-touch-icon" title="SoundThing" type="image/png" />
 </head> 
 <body> 
   
   <div data-role="page" data-theme="b" id="st-checkin">
 
   	<div data-role="header">
-  	  <a href="index.html" data-icon="back" data-theme="b">Back</a>
-  		<h1>Checkin</h1>
+  		<h1>SoundThing</h1>
+    	<a href="/mobile/signout" data-direction="reverse" class="ui-btn-right" rel="external">Sign out</a>
   	</div>
 
   	<div data-role="content">	
-  		
-  		<article> 
-        <p>Finding your location: <span id="status">checking...</span></p> 
-        <div id="mapcanvas" style="width:100%; height:200px;"></div>
+  		 
+      <h3>Welcome</h3>
+      <p>Finding your location: <span id="status">checking...</span></p> 
+      
+      <article>
       </article>
-      
-      <div class="result">
-        
-      </div>
-      
-      <script> 
-  		function sendlocation(lat, lng) {
-  		  query = "lat="+lat+"&lon="+lng;
-        //console.log(query);
-        $.ajax({
-          type: 'POST',
-          //url: "/location/tom/"+lat+"/"+lon,
-          url: "/location/tom",
-          data: query,
-          success: function(data) {
-            displaymap(lat, lng);
-            console.log(data);
-          },
-          error: function(data) {
-          }
-        });
-        
-        
-  		}
-  		
-  		function displaymap(lat, lng) {
-        // Show mobile webkit compatable map here if we want
-  		}
-  		
-      function success(position) {
-        var s = document.querySelector('#status');
 
-        if (s.className == 'success') {
-          // not sure why we're hitting this twice in FF, I think it's to do with a cached result coming back    
-          return;
-        }
-
-        s.innerHTML = "found you!";
-        s.className = 'success';
-        
-        sendlocation(position.coords.latitude, position.coords.longitude);
-        
-      }
-
-      function error(msg) {
-        var s = document.querySelector('#status');
-        s.innerHTML = typeof msg == 'string' ? msg : "failed";
-        s.className = 'fail';
-
-        // console.log(arguments);
-      }
-      
-      // Are we running a Geo Location capable browser?
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error);
-      } else {
-        error('not supported');
-      }
-
-      </script>
-  				
   	</div>
 
   </div>
+    
+      <script> 
+      
+    	$(document).ready(function() {
+    	    
+        function getgignews(artist) {
+          if (artist != null) {
+            artist = escape(artist);
+            query = "http://api.gigulate.com/1.0/gigs.gigs?key=dc4020cdf385e890&artist="+artist+"&response=json&callback=?";
+            var gignews = $.getJSON(query, function(data) {
+              //console.log("success");
+              // Output gigs
+              if (data["gigs.gigs"].gig.length > 0) {
+                var items = [];
+                $.each(data["gigs.gigs"]["gig"], function(key, val) {
+                  if (key < 5) {
+                    //console.log(val);
+                    items.push('<li id="gigsnewsitem' + key + '"><a href="' + val["url"] + '" class="ui-link">' + val["venue"]["name"] + '</a> <em>' + $.format.date(val["date"], "dd/MM/yyyy") + '</em></li>');
+                  }
+                });
+                var gigslist = '<div id="st-gigsnews" class="ui-body ui-body-a"><h3 class="reducedpadding">Upcoming gigs</h3><ul>'+items.join('')+'</ul></div><br/>';
+                $("article").append(gigslist);
+              }
+            })
+            .success(function() { 
+              //console.log("second success"); 
+            })
+            .error(function() {
+              //console.log("error"); 
+            })
+            .complete(function() {
+              //console.log("complete");
+            });
+          }
+        }
+      
+        function getmusicnews(artist) {
+          if (artist != null) {
+            artist = escape(artist);
+            query = "http://api.gigulate.com/1.0/news.stories?key=dc4020cdf385e890&artist="+artist+"&response=json&callback=?";
+            //console.log(query);
+            var musicnews = $.getJSON(query, function(data) {
+              //console.log("success");
+              // Output news
+              if (data["news.stories"]["story"].length > 0) {
+                var items = [];
+                $.each(data["news.stories"]["story"], function(key, val) {
+                  if (key < 5) {
+                    items.push('<li id="musicnewsitem' + key + '"><a href="' + val["url"] + '" class="ui-link">' + val["title"] + '</a> <em>'+jQuery.timeago(val["date.published"])+'</em></li>');
+                  }
+                });
+                var newslist = '<br/><div id="st-musicnews" class="ui-body ui-body-a"><h3 class="reducedpadding">News</h3><ul>'+items.join('')+'</ul></div><br/>';
+                $("article").append(newslist);
+              }
+            })
+            .success(function() { 
+              //console.log("second success"); 
+            })
+            .error(function() {
+              //console.log("error"); 
+            })
+            .complete(function() {
+              //console.log("complete");
+              getgignews(artist);
+            });
+          }
+        }
+        function showartistinfo(artist) {
+          
+          eartist = '<span class="st-music-artist">'+artist+'</span><br/>';
+          etrack = '<span class="st-music-artist">Some track</span><br/>';
+          ealbum = '<span class="st-music-track">Some album</span><br/>';
+          eyear = '<span class="st-music-year">2011</span><br/>';
+          
+          var artistinfo = '<div id="st-artistinfo" class="ui-body ui-body-e"><h3 class="reducedpadding">Now playing</h3><div class="ui-grid-a"><div class="ui-block-b">'+eartist+etrack+ealbum+eyear+'</div></div><br/>';
+          
+          $("article").append(artistinfo);
+          getmusicnews(artist);
+        }
+      
+    		function sendlocation(lat, lng) {
+    		  query = "lat="+lat+"&lng="+lng;
+          //console.log(query);
+          $.ajax({
+            type: 'POST',
+            url: "/location/"+$.cookie("spotifyname"),
+            data: query,
+            success: function(data) {
+        		  $("article").prepend("<span><strong>Lng</strong>: "+lng+"</span><br/><br/>");
+        		  $("article").prepend("<span><strong>Lat</strong>: "+lat+"</span><br/>");
+              displaymap(lat, lng);
+              artist = "Kanye West";
+              showartistinfo(artist);
+              //console.log(data);
+            },
+            error: function(data) {
+        		  $("article").append("<span>Failed to send location to app :(</span>");
+              //console.log(data.responseText);
+              //console.log(data);
+            }
+          });
+        
+        
+    		}
+  		
+    		function displaymap(lat, lng) {
+          // Show mobile webkit compatable map here if we want
+        
+    		}
+  		
+        function success(position) {
+          var s = document.querySelector('#status');
+
+          if (s.className == 'success') {
+            // not sure why we're hitting this twice in FF, I think it's to do with a cached result coming back    
+            return;
+          }
+
+          s.innerHTML = "found you!";
+          s.className = 'success';
+        
+          sendlocation(position.coords.latitude, position.coords.longitude);
+        
+        }
+
+        function error(msg) {
+          var s = document.querySelector('#status');
+          s.innerHTML = typeof msg == 'string' ? msg : "failed";
+          s.className = 'fail';
+
+          // console.log(arguments);
+        }
+      
+        // Are we running a Geo Location capable browser?
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(success, error);
+        } else {
+          error('not supported');
+        }
+      
+        if ($.cookie("spotifyname") == null) {
+          window.location="index.html";
+        }
+        
+      });
+      </script>
  
 </body> 
 </html>
